@@ -99,24 +99,23 @@ int main(int argc, char **argv) {
         int d = pqAccess(pq, pageNum);
         if (d == -1){
             for (int f = 0; f < maxFrames; f++) {
-                faults[f]++;
+                faults[f]+= 1;
             }
         } else {
             for (int f = 0; f < d && f < maxFrames; f++) {
-                faults[f]++;
+                faults[f]+= 1;
             }
         }
     }
 
     fprintf(stderr, "\n%lu total accesses processed\n", numAccesses);
-
     // Output CSV results to stdout (redirect with > to create a .csv file)
     printf("Total Accesses:,%lu\n", numAccesses);
     printf("Frames,Missees,Miss Rate\n");
 
     // TODO: Loop from frame count 1 to maxFrames and print each row:
     for (int frameCount = 1; frameCount <= maxFrames; frameCount ++){
-        printf("%d,%lu,%f\n", frameCount, faults[frameCount], (double)faults[frameCount] / (double)numAccesses);
+        printf("%d,%lu,%f\n", frameCount, faults[frameCount-1], (double)faults[frameCount-1] / (double)numAccesses);
     }
     
     // TODO: Free your PageQueue and the faults[] array,
